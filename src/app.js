@@ -1,14 +1,4 @@
-        {stakeholders.length > 0 && (
-          <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <Users className="w-5 h-5 text-blue-600" />
-              Organizational Chart
-            </h3>
-            <div className="org-chart">
-              {buildOrgChartDisplay(stakeholders)}
-            </div>
-          </div>
-        )}import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Users, Plus, Target, TrendingUp, AlertCircle, CheckCircle, Download, Mail, BarChart3 } from 'lucide-react';
 
 const StakeholderInfluenceMapper = () => {
@@ -94,10 +84,8 @@ const StakeholderInfluenceMapper = () => {
   };
 
   const downloadReport = () => {
-    // Generate PDF content
     const reportContent = generatePDFContent();
     
-    // Create a simple HTML page that can be printed as PDF
     const printWindow = window.open('', '_blank');
     printWindow.document.write(`
       <!DOCTYPE html>
@@ -264,8 +252,46 @@ const StakeholderInfluenceMapper = () => {
     `;
   };
 
+  const buildOrgChart = (stakeholders) => {
+    const hierarchy = {};
+    const rootLevel = [];
+    
+    stakeholders.forEach(person => {
+      if (!person.reportsTo || person.reportsTo === '') {
+        rootLevel.push(person);
+      } else {
+        if (!hierarchy[person.reportsTo]) {
+          hierarchy[person.reportsTo] = [];
+        }
+        hierarchy[person.reportsTo].push(person);
+      }
+    });
+    
+    const renderLevel = (people, level = 0) => {
+      return people.map(person => {
+        const reports = hierarchy[person.name] || [];
+        const indentStyle = level > 0 ? `margin-left: ${level * 30}px;` : '';
+        
+        return `
+          <div class="org-person" style="${indentStyle}">
+            <strong>${person.name}</strong> - ${person.title}
+            <br><small>Influence: ${person.influence}/10 | Support: ${person.support}/10 | ${person.department}</small>
+            ${reports.length > 0 ? renderLevel(reports, level + 1) : ''}
+          </div>
+        `;
+      }).join('');
+    };
+    
+    return `
+      <div class="org-level">
+        <h4>Organizational Hierarchy</h4>
+        ${renderLevel(rootLevel)}
+        ${rootLevel.length === 0 ? '<p><em>No reporting relationships specified</em></p>' : ''}
+      </div>
+    `;
+  };
+
   const buildOrgChartDisplay = (stakeholders) => {
-    // Build hierarchy for display
     const hierarchy = {};
     const rootLevel = [];
     
@@ -336,63 +362,6 @@ const StakeholderInfluenceMapper = () => {
         {rootLevel.map(person => renderPersonCard(person, 0))}
       </div>
     );
-  };
-  const buildOrgChart = (stakeholders) => {
-    // Build hierarchy for PDF
-    const hierarchy = {};
-    const rootLevel = [];
-    
-    stakeholders.forEach(person => {
-      if (!person.reportsTo || person.reportsTo === '') {
-        rootLevel.push(person);
-      } else {
-        if (!hierarchy[person.reportsTo]) {
-          hierarchy[person.reportsTo] = [];
-        }
-        hierarchy[person.reportsTo].push(person);
-      }
-    });
-    
-    const renderLevel = (people, level = 0) => {
-      return people.map(person => {
-        const reports = hierarchy[person.name] || [];
-        const indentStyle = level > 0 ? `margin-left: ${level * 30}px;` : '';
-        
-        return `
-          <div class="org-person" style="${indentStyle}">
-            <strong>${person.name}</strong> - ${person.title}
-            <br><small>Influence: ${person.influence}/10 | Support: ${person.support}/10 | ${person.department}</small>
-            ${reports.length > 0 ? renderLevel(reports, level + 1) : ''}
-          </div>
-        `;
-      }).join('');;
-    };
-    
-    return `
-      <div class="org-level">
-        <h4>Organizational Hierarchy</h4>
-        ${renderLevel(rootLevel)}
-        ${rootLevel.length === 0 ? '<p><em>No reporting relationships specified</em></p>' : ''}
-      </div>
-    `; level > 0 ? `margin-left: ${level * 30}px;` : '';
-        
-        return `
-          <div class="org-person" style="${indentStyle}">
-            <strong>${person.name}</strong> - ${person.title}
-            <br><small>Influence: ${person.influence}/10 | Support: ${person.support}/10 | ${person.department}</small>
-            ${reports.length > 0 ? renderLevel(reports, level + 1) : ''}
-          </div>
-        `;
-      }).join('');
-    };
-    
-    return `
-      <div class="org-level">
-        <h4>Organizational Hierarchy</h4>
-        ${renderLevel(rootLevel)}
-        ${rootLevel.length === 0 ? '<p><em>No reporting relationships specified</em></p>' : ''}
-      </div>
-    `;
   };
 
   const submitLeadForm = () => {
@@ -656,6 +625,18 @@ const StakeholderInfluenceMapper = () => {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {stakeholders.length > 0 && (
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <Users className="w-5 h-5 text-blue-600" />
+              Organizational Chart
+            </h3>
+            <div className="org-chart">
+              {buildOrgChartDisplay(stakeholders)}
+            </div>
           </div>
         )}
 
