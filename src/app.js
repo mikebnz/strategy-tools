@@ -365,7 +365,7 @@ const StakeholderInfluenceMapper = () => {
             ${reports.length > 0 ? renderLevel(reports, level + 1) : ''}
           </div>
         `;
-      }).join('');
+      }).join('');;
     };
     
     return `
