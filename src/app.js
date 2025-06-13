@@ -97,7 +97,6 @@ const StakeholderInfluenceMapper = () => {
     link.download = `stakeholder-analysis-${new Date().toISOString().split('T')[0]}.json`;
     link.click();
     
-    // Reset form and hide modal
     setShowLeadCapture(false);
     setLeadData({ name: '', email: '', company: '', phone: '' });
   };
@@ -108,13 +107,9 @@ const StakeholderInfluenceMapper = () => {
       return;
     }
     
-    // In a real implementation, this would send to Netlify Forms
     console.log('Lead captured:', leadData);
-    
-    // For demo, just download the report
     downloadReport();
     
-    // Analytics tracking (would integrate with real analytics)
     if (typeof gtag !== 'undefined') {
       gtag('event', 'report_generated', {
         event_category: 'engagement',
@@ -172,7 +167,6 @@ const StakeholderInfluenceMapper = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
@@ -187,24 +181,13 @@ const StakeholderInfluenceMapper = () => {
             </div>
             <div className="text-right">
               <p className="text-sm text-gray-600">Powered by 30+ years of enterprise sales experience</p>
-              <p className="text-xs text-gray-400 mt-3">
-              Based on methodology used to win New Zealand's largest managed services contracts
-            </p>
-          </div>
-        </footer>
-      </div>
-    </div>
-  );
-};
-
-export default StakeholderInfluenceMapper;500">mike@wn.co.nz | +64 27 449 6200</p>
+              <p className="text-xs text-gray-500">mike@wn.co.nz | +64 27 449 6200</p>
             </div>
           </div>
         </div>
       </header>
 
       <div className="max-w-6xl mx-auto p-6">
-        {/* Tool Introduction */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
           <div className="flex items-center gap-3 mb-4">
             <Users className="w-8 h-8 text-blue-600" />
@@ -220,7 +203,6 @@ export default StakeholderInfluenceMapper;500">mike@wn.co.nz | +64 27 449 6200</
           </div>
         </div>
 
-        {/* Add Stakeholder Form */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
           <h3 className="text-lg font-semibold mb-4">Add Stakeholder</h3>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
@@ -258,7 +240,6 @@ export default StakeholderInfluenceMapper;500">mike@wn.co.nz | +64 27 449 6200</
           </div>
         </div>
 
-        {/* Stakeholder List */}
         {stakeholders.length > 0 && (
           <div className="space-y-4 mb-6">
             {stakeholders.map((stakeholder) => (
@@ -355,7 +336,6 @@ export default StakeholderInfluenceMapper;500">mike@wn.co.nz | +64 27 449 6200</
           </div>
         )}
 
-        {/* Analysis Dashboard */}
         {analysis && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             <div className="bg-blue-50 rounded-lg p-6">
@@ -404,7 +384,6 @@ export default StakeholderInfluenceMapper;500">mike@wn.co.nz | +64 27 449 6200</
           </div>
         )}
 
-        {/* Generate Report Button */}
         {stakeholders.length > 0 && (
           <div className="bg-white rounded-lg shadow-lg p-6 text-center">
             <h3 className="text-lg font-semibold mb-3">Ready for Strategic Insights?</h3>
@@ -421,7 +400,6 @@ export default StakeholderInfluenceMapper;500">mike@wn.co.nz | +64 27 449 6200</
           </div>
         )}
 
-        {/* Lead Capture Modal */}
         {showLeadCapture && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg max-w-md w-full p-6">
@@ -482,7 +460,6 @@ export default StakeholderInfluenceMapper;500">mike@wn.co.nz | +64 27 449 6200</
           </div>
         )}
 
-        {/* Footer */}
         <footer className="mt-12 bg-white rounded-lg shadow-lg p-6">
           <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-3">
@@ -501,4 +478,14 @@ export default StakeholderInfluenceMapper;500">mike@wn.co.nz | +64 27 449 6200</
               </span>
               <span>+64 27 449 6200</span>
             </div>
-            <p className="text-xs text-gray-
+            <p className="text-xs text-gray-400 mt-3">
+              Based on methodology used to win New Zealand's largest managed services contracts
+            </p>
+          </div>
+        </footer>
+      </div>
+    </div>
+  );
+};
+
+export default StakeholderInfluenceMapper;
