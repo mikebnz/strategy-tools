@@ -110,8 +110,8 @@ const StakeholderInfluenceMapper = () => {
     console.log('Lead captured:', leadData);
     downloadReport();
     
-    if (typeof gtag !== 'undefined') {
-      gtag('event', 'report_generated', {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'report_generated', {
         event_category: 'engagement',
         event_label: 'stakeholder_mapper'
       });
